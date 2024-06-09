@@ -28,7 +28,7 @@ $roles = @(
 )
 
 if ([string]::IsNullOrEmpty($env:AZURE_RESOURCE_GROUP)) {
-    $env:AZURE_RESOURCE_GROUP = "rg-$env:AZURE_ENV_NAME"
+    $env:AZURE_RESOURCE_GROUP = "$env:AZURE_ENV_NAME-rg"
     & azd env set AZURE_RESOURCE_GROUP $env:AZURE_RESOURCE_GROUP
 }
 
