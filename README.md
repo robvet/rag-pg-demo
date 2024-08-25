@@ -101,17 +101,6 @@ In order to deploy and run this example, you'll need
 > [!WARNING]<br>
 > By default this sample will create an Azure Container App, and Azure AI Search resource that have a monthly cost, as well as Form Recognizer resource that has cost per document page. You can switch them to free versions of each of them if you want to avoid this cost by changing the parameters file under the infra folder (though there are some limits to consider; for example, you can have up to 1 free Cognitive Search resource per subscription, and the free Form Recognizer resource only analyzes the first 2 pages of each document.)
 
-### Cost estimation
-
-Pricing varies per region and usage, so it isn't possible to predict exact costs for your usage. However, you can try the [Azure pricing calculator](https://azure.microsoft.com/pricing/calculator/) for the resources below:
-
-- [**Azure Container Apps**](https://azure.microsoft.com/pricing/details/container-apps/)
-- [**Azure OpenAI Service**](https://azure.microsoft.com/pricing/details/cognitive-services/openai-service/)
-- [**Azure Form Recognizer**](https://azure.microsoft.com/pricing/details/form-recognizer/)
-- [**Azure AI Search**](https://azure.microsoft.com/pricing/details/search/)
-- [**Azure Blob Storage**](https://azure.microsoft.com/pricing/details/storage/blobs/)
-- [**Azure Monitor**](https://azure.microsoft.com/pricing/details/monitor/)
-
 ### Project setup
 
 You have a few options for setting up this project. The easiest way to get started is GitHub Codespaces, since it will setup all the tools for you, but you can also set it up [locally](#local-environment) if desired.
@@ -307,27 +296,27 @@ By default, the deployed Azure container app will have no authentication or acce
 
 To then limit access to a specific set of users or groups, you can follow the steps from [Restrict your Azure AD app to a set of users](https://learn.microsoft.com/azure/active-directory/develop/howto-restrict-your-app-to-a-set-of-users) by changing "Assignment Required?" option under the Enterprise Application, and then assigning users/groups access.  Users not granted explicit access will receive the error message -AADSTS50105: Your administrator has configured the application <app_name> to block users unless they are specifically granted ('assigned') access to the application.-
 
-### Enable GPT-4V support
+### Enable vision (multi-modal) support
 
-With GPT-4-vision-preview(GPT-4V), it's possible to support an enrichmented retrival augmented generation by providing both text and image as source content. To enable GPT-4V support, you need to enable `USE_VISION` and use `GPT-4V` model when provisioning.
+With GPT-4o, it's possible to support an enrichmented retrival augmented generation by providing both text and image as source content. To enable vision support, you need to enable `USE_VISION` and use `GPT-4o` model when provisioning.
 
 > [!NOTE]
-> You would need to re-indexing supporting material and re-deploy the application after enabling GPT-4V support if you have already deployed the application before. This is because enabling GPT-4V support requires new fields to be added to the search index.
+> You would need to re-indexing supporting material and re-deploy the application after enabling GPT-4o support if you have already deployed the application before. This is because enabling GPT-4o support requires new fields to be added to the search index.
 
 To enable GPT-4V support with Azure OpenAI Service, run the following commands:
 ```bash
 azd env set USE_VISION true
 azd env set USE_AOAI true
-azd env set AZURE_OPENAI_CHATGPT_MODEL_NAME gpt-4
-azd env set AZURE_OPENAI_RESOURCE_LOCATION westus # gpt-4-vision-preview is only available in a few regions. Please check the model availability for more details.
+azd env set AZURE_OPENAI_CHATGPT_MODEL_NAME gpt-4o
+azd env set AZURE_OPENAI_RESOURCE_LOCATION westus # Please check the gpt-4o availability for more details.
 azd up
 ```
 
-To enable GPT-4V support with OpenAI, run the following commands:
+To enable vision support with OpenAI, run the following commands:
 ```bash
 azd env set USE_VISION true
 azd env set USE_AOAI false
-azd env set OPENAI_CHATGPT_DEPLOYMENT gpt-4-vision-preview
+azd env set OPENAI_CHATGPT_DEPLOYMENT gpt-4o
 azd up
 ```
 
@@ -349,6 +338,19 @@ to production. Here are some things to consider:
 * **Authentication**: By default, the deployed app is publicly accessible. We recommend restricting access to authenticated users. See [Enabling authentication](#enabling-authentication) above for how to enable authentication.
 * **Networking**: We recommend deploying inside a Virtual Network. If the app is only for internal enterprise use, use a private DNS zone. Also consider using Azure API Management (APIM) for firewalls and other forms of protection. For more details, read [Azure OpenAI Landing Zone reference architecture](https://techcommunity.microsoft.com/t5/azure-architecture-blog/azure-openai-landing-zone-reference-architecture/ba-p/3882102).
 * **Loadtesting**: We recommend running a loadtest for your expected number of users.
+
+## Guidance
+
+### Cost estimation
+
+Pricing varies per region and usage, so it isn't possible to predict exact costs for your usage. However, you can try the [Azure pricing calculator](https://azure.microsoft.com/pricing/calculator/) for the resources below:
+
+- [**Azure Container Apps**](https://azure.microsoft.com/pricing/details/container-apps/)
+- [**Azure OpenAI Service**](https://azure.microsoft.com/pricing/details/cognitive-services/openai-service/)
+- [**Azure Form Recognizer**](https://azure.microsoft.com/pricing/details/form-recognizer/)
+- [**Azure AI Search**](https://azure.microsoft.com/pricing/details/search/)
+- [**Azure Blob Storage**](https://azure.microsoft.com/pricing/details/storage/blobs/)
+- [**Azure Monitor**](https://azure.microsoft.com/pricing/details/monitor/)
 
 ## Resources
 
